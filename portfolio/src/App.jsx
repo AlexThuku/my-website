@@ -10,8 +10,21 @@ import Contact from './components/sections/Contact';
 import SEO from './components/SEO';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('');
+  const [activeSection, setActiveSection] = useState('hero');
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // Ensure the page starts at the top on initial load
+  useEffect(() => {
+    // If no hash is present, force scroll to top and set hero as active
+    if (window.location.hash === '') {
+      window.scrollTo(0, 0);
+      setActiveSection('hero');
+    } else {
+      // If there's a hash, scroll to that section
+      const sectionId = window.location.hash.substring(1);
+      setActiveSection(sectionId);
+    }
+  }, []);
 
   // Track active section for SEO updates
   useEffect(() => {
@@ -28,15 +41,23 @@ function App() {
 
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !isInitialLoad) {
           const id = entry.target.id;
           if (id) {
             setActiveSection(id);
             
             // Only update URL hash after initial load is complete
             if (!isInitialLoad) {
-              // Update URL hash for better indexing
-              window.history.replaceState(null, null, id === 'hero' ? '/' : `#${id}`);
+              // Only update URL hash if it's not the initial load and we're not on the hero section
+              // If we're on hero section, keep the URL clean without a hash
+              if (id !== 'hero') {
+                window.history.replaceState(null, null, `#${id}`);
+              } else {
+                // Remove any hash if we're at the hero section
+                if (window.location.hash) {
+                  window.history.replaceState(null, null, '/');
+                }
+              }
             }
           }
         }
@@ -65,25 +86,25 @@ function App() {
     switch (activeSection) {
       case 'about':
         return {
-          title: 'About Alex Thuku',
+          title: 'About',
           description: 'Software engineer specializing in backend systems, microservices, and DevOps solutions. Learn about my background and expertise.',
           section: 'about'
         };
       case 'experience':
         return {
-          title: 'Experience | Alex Thuku',
+          title: 'Experience',
           description: 'Alex Thuku\'s professional experience as a software engineer with expertise in Go and cloud technologies.',
           section: 'experience'
         };
       case 'projects':
         return {
-          title: 'Projects | Alex Thuku',
+          title: 'Projects',
           description: 'Explore Alex Thuku\'s software engineering projects focused on backend development, microservices, and DevOps solutions.',
           section: 'projects'
         };
       case 'contact':
         return {
-          title: 'Contact | Alex Thuku',
+          title: 'Contact',
           description: 'Get in touch with Alex Thuku, software engineer specializing in backend systems, microservices, and DevOps solutions.',
           section: 'contact'
         };

@@ -6,7 +6,8 @@ const SEO = ({ title, description, section }) => {
   const defaultDescription = 'Experienced Software Engineer specializing in backend systems, microservices, and DevOps solutions.';
   const siteUrl = 'https://alexthuku.com';
   
-  const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+  // Use the provided title directly without appending the site title if it already contains the name
+  const pageTitle = title || siteTitle;
   const pageDescription = description || defaultDescription;
   const canonicalUrl = section ? `${siteUrl}/#${section}` : siteUrl;
 
