@@ -1,0 +1,13 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Alex Thuku",
+  "jobTitle": "Software Engineer",
+  "url": "https://alexthuku.com",
+  "sameAs": [
+    "https://github.com/alexthuku",
+    "https://linkedin.com/in/alexthuku"
+  ],
+  "description": "Software engineer specializing in building backend systems, microservices, and DevOps solutions.",
+  "knowsAbout": ["Go", "Cloud Computing", "Backend Development", "DevOps", "Microservices"]
+}
