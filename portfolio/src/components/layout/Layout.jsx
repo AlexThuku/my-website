@@ -57,6 +57,13 @@ const Layout = ({ children }) => {
     // Simulate loading
     const timeout = setTimeout(() => {
       setIsLoading(false);
+      // Scroll to top when page loads and after loading screen
+      window.scrollTo(0, 0);
+      
+      // Force the URL to be without hash on initial load
+      if (window.location.hash) {
+        window.history.replaceState(null, null, window.location.pathname);
+      }
     }, 2000);
 
     return () => clearTimeout(timeout);

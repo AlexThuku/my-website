@@ -11,9 +11,15 @@ import SEO from './components/SEO';
 
 function App() {
   const [activeSection, setActiveSection] = useState('');
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Track active section for SEO updates
   useEffect(() => {
+    // Set a timeout to prevent the observer from affecting initial page load
+    const initialLoadTimer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 3000); // Wait longer than the loading screen (2000ms) to ensure proper initialization
+
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -26,8 +32,12 @@ function App() {
           const id = entry.target.id;
           if (id) {
             setActiveSection(id);
-            // Update URL hash for better indexing
-            window.history.replaceState(null, null, id === 'hero' ? '/' : `#${id}`);
+            
+            // Only update URL hash after initial load is complete
+            if (!isInitialLoad) {
+              // Update URL hash for better indexing
+              window.history.replaceState(null, null, id === 'hero' ? '/' : `#${id}`);
+            }
           }
         }
       });
@@ -35,15 +45,20 @@ function App() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     
-    // Observe all section elements
-    document.querySelectorAll('section[id]').forEach((section) => {
-      observer.observe(section);
-    });
+    // Wait a bit before observing sections to ensure the page is properly rendered
+    const observeTimer = setTimeout(() => {
+      // Observe all section elements
+      document.querySelectorAll('section[id]').forEach((section) => {
+        observer.observe(section);
+      });
+    }, 2500);
 
     return () => {
       observer.disconnect();
+      clearTimeout(initialLoadTimer);
+      clearTimeout(observeTimer);
     };
-  }, []);
+  }, [isInitialLoad]);
 
   // SEO title and description based on active section
   const getSeoProps = () => {
@@ -86,11 +101,11 @@ function App() {
       <SEO {...getSeoProps()} />
       <GlobalStyle />
       <Layout>
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Contact />
+        <Hero id="hero" />
+        <About id="about" />
+        <Experience id="experience" />
+        <Projects id="projects" />
+        <Contact id="contact" />
       </Layout>
     </ThemeProvider>
   );

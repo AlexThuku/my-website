@@ -66,7 +66,7 @@ const StyledHeroSection = styled.section`
   }
 `;
 
-const Hero = () => {
+const Hero = ({ id }) => {
   const one = <h1>Hi, my name is</h1>;
   const two = <h2 className="big-heading">Alex Thuku.</h2>;
   const three = <h3 className="big-heading">Software Engineer.</h3>;
@@ -88,7 +88,7 @@ const Hero = () => {
   const items = [one, two, three, four, five];
 
   return (
-    <StyledHeroSection>
+    <StyledHeroSection id={id}>
       {items.map((item, i) => (
         <motion.div
           key={i}

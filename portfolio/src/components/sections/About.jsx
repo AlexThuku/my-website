@@ -119,7 +119,7 @@ const StyledPic = styled.div`
   }
 `;
 
-const About = () => {
+const About = ({ id }) => {
   const skills = [
     'Go (Golang)',
     'Python',
@@ -145,7 +145,7 @@ const About = () => {
   ];
 
   return (
-    <StyledAboutSection id="about">
+    <StyledAboutSection id={id}>
       <motion.h2 
         className="numbered-heading" 
         initial={{ opacity: 0, y: 20 }}

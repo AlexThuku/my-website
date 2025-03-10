@@ -113,6 +113,7 @@ const GlobalStyle = createGlobalStyle`
     max-width: 1600px;
     min-height: 100vh;
     padding: 200px 150px;
+    counter-reset: section;
 
     @media (max-width: 1080px) {
       padding: 200px 100px;
